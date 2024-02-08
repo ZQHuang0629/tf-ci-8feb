@@ -2,14 +2,28 @@ resource "aws_s3_bucket" "example" {
   bucket = "zhangqin-terraform-ci-bucket"
 }
 
-resource "aws_s3_bucket_acl" "example" {
+resource "aws_s3_bucket_ownership_controls" "example" {
   bucket = aws_s3_bucket.example.id
-  acl    = "public-read"
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
 }
 
-resource "aws_s3_bucket_versioning" "versioning_example" {
+resource "aws_s3_bucket_public_access_block" "example" {
   bucket = aws_s3_bucket.example.id
-  versioning_configuration {
-    status = "Enabled"
-  }
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  depends_on = [
+    aws_s3_bucket_ownership_controls.example,
+    aws_s3_bucket_public_access_block.example,
+  ]
+
+  bucket = aws_s3_bucket.example.id
+  acl    = "public-read"
 }
