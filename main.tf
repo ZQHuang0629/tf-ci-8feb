@@ -4,6 +4,9 @@
 #     force_destroy = true
 #     acl = "public-read"
 # }
+provider "aws" {
+  region = "ap-southeast-1"
+}
 
 resource "aws_s3_bucket" "example" {
   bucket = "zhangqin-terraform-ci-bucket"
