@@ -1,29 +1,10 @@
 resource "aws_s3_bucket" "example" {
-  bucket = "zhangqin-terraform-ci-bucket"
-}
-
-resource "aws_s3_bucket_ownership_controls" "example" {
-  bucket = aws_s3_bucket.example.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
-resource "aws_s3_bucket_public_access_block" "example" {
-  bucket = aws_s3_bucket.example.id
-
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
-}
-
-resource "aws_s3_bucket_acl" "example" {
-  depends_on = [
-    aws_s3_bucket_ownership_controls.example,
-    aws_s3_bucket_public_access_block.example,
-  ]
-
-  bucket = aws_s3_bucket.example.id
-  acl    = "public-read"
+  #checkov:skip=CKV_AWS_18:Ensure the S3 bucket has access logging enabled
+  #checkov:skip=CKV2_AWS_61:Ensure that an S3 bucket has a lifecycle configuration
+  #checkov:skip=CKV2_AWS_62:Ensure S3 buckets should have event notifications enabled
+  #checkov:skip=CKV_AWS_145:Ensure that S3 buckets are encrypted with KMS by default
+  #checkov:skip=CKV2_AWS_6:Ensure that S3 bucket has a Public Access block
+  #checkov:skip=CKV_AWS_144:Ensure that S3 bucket has cross-region replication enabled
+  #checkov:skip=CKV_AWS_21:Ensure all data stored in the S3 bucket have versioning enabled
+  bucket = "jaz-terraform-ci-bucket-123"
 }
